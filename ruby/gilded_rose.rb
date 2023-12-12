@@ -22,11 +22,14 @@ class GildedRose
   end
 
   def process_backstage(item)
-    return if item.quality >= 50
-    return item.quality += 2 if item.sell_in > 5 && item.sell_in <= 10
-    return item.quality += 3 if item.sell_in <= 5
-    
-    # item.quality = 0
+    return item.quality = 0 if item.sell_in <= 0
+    return update_quality_with(2, item) if item.sell_in > 5 && item.sell_in <= 10
+    return update_quality_with(3, item) if item.sell_in <= 5 && item.sell_in >= 0
+    update_quality_with(1, item)
+  end
+
+  def update_quality_with(count, item)
+    count.times { item.quality += 1 unless item.quality == 50 }
   end
 
   def update_sell_in(item)
